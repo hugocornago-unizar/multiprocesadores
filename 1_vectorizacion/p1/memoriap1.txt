@@ -1,0 +1,110 @@
+Si lo vectorizas manualmente no aparece como que el compilador lo haya vectorizado
+
+
+Al llamar una funcion de otro fichero, engañamos al compilador para que no optimice nada, ya que en si la anidación debúcles no tenía mucho sentido
+
+
+modelo de procesador: i5-9500
+
+
+compilando fichero axpy.c con vlen 1024 y compilador gcc ... 
+
+gcc vectorial avx ... 
+../axpy.c:149:13: optimized:   Inlining _mm_store_ps/449 into axpy_intr_SSE/6619 (always_inline).
+../axpy.c:148:18: optimized:   Inlining _mm_add_ps/342 into axpy_intr_SSE/6619 (always_inline).
+../axpy.c:147:19: optimized:   Inlining _mm_mul_ps/344 into axpy_intr_SSE/6619 (always_inline).
+../axpy.c:146:18: optimized:   Inlining _mm_load_ps/442 into axpy_intr_SSE/6619 (always_inline).
+../axpy.c:145:18: optimized:   Inlining _mm_load_ps/442 into axpy_intr_SSE/6619 (always_inline).
+../axpy.c:142:18: optimized:   Inlining _mm_set1_ps/437 into axpy_intr_SSE/6619 (always_inline).
+../axpy.c:74:30: optimized: loop unrolled 1 times
+../axpy.c:117:36: optimized: loop vectorized using 32 byte vectors
+OK
+
+gcc escalar avx ... 
+OK
+
+gcc vectorial avx+fma ... 
+../axpy.c:149:13: optimized:   Inlining _mm_store_ps/455 into axpy_intr_SSE/6625 (always_inline).
+../axpy.c:148:18: optimized:   Inlining _mm_add_ps/348 into axpy_intr_SSE/6625 (always_inline).
+../axpy.c:147:19: optimized:   Inlining _mm_mul_ps/350 into axpy_intr_SSE/6625 (always_inline).
+../axpy.c:146:18: optimized:   Inlining _mm_load_ps/448 into axpy_intr_SSE/6625 (always_inline).
+../axpy.c:145:18: optimized:   Inlining _mm_load_ps/448 into axpy_intr_SSE/6625 (always_inline).
+../axpy.c:142:18: optimized:   Inlining _mm_set1_ps/443 into axpy_intr_SSE/6625 (always_inline).
+../axpy.c:74:30: optimized: loop unrolled 1 times
+../axpy.c:117:36: optimized: loop vectorized using 32 byte vectors
+OK
+
+gcc escalar avx+fma ... 
+OK
+
+gcc vectorial avx512... 
+../axpy.c:149:13: optimized:   Inlining _mm_store_ps/449 into axpy_intr_SSE/6619 (always_inline).
+../axpy.c:148:18: optimized:   Inlining _mm_add_ps/342 into axpy_intr_SSE/6619 (always_inline).
+../axpy.c:147:19: optimized:   Inlining _mm_mul_ps/344 into axpy_intr_SSE/6619 (always_inline).
+../axpy.c:146:18: optimized:   Inlining _mm_load_ps/442 into axpy_intr_SSE/6619 (always_inline).
+../axpy.c:145:18: optimized:   Inlining _mm_load_ps/442 into axpy_intr_SSE/6619 (always_inline).
+../axpy.c:142:18: optimized:   Inlining _mm_set1_ps/437 into axpy_intr_SSE/6619 (always_inline).
+../axpy.c:74:30: optimized: loop unrolled 1 times
+../axpy.c:117:36: optimized: loop vectorized using 64 byte vectors
+OK
+
+gcc escalar avx512... 
+OK
+
+fin
+
+
+Se puede observar como los reportes escalares tienen longitud 0, porque no hay reportes como tal.
+total 3
+-rw-r--r-- 1 a871208 alumnos   0 ene 30 09:49 axpy.1k.single.esc.avx512.gcc.report.txt
+-rw-r--r-- 1 a871208 alumnos   0 ene 30 09:49 axpy.1k.single.esc.avxfma.gcc.report.txt
+-rw-r--r-- 1 a871208 alumnos   0 ene 30 09:49 axpy.1k.single.esc.avx.gcc.report.txt
+-rw-r--r-- 1 a871208 alumnos 698 ene 30 09:51 axpy.1k.single.vec.avx512.gcc.report.txt
+-rw-r--r-- 1 a871208 alumnos 698 ene 30 09:51 axpy.1k.single.vec.avxfma.gcc.report.txt
+-rw-r--r-- 1 a871208 alumnos 698 ene 30 09:51 axpy.1k.single.vec.avx.gcc.report.txt
+
+
+ymm = 256
+zmm = 512
+
+ejecutando axpy.1k.single.vec.avx.gcc ... OK
+ejecutando axpy.1k.single.vec.avxfma.gcc ... OK
+ejecutando axpy.1k.single.esc.avx.gcc ... OK
+ejecutando axpy.1k.single.esc.avxfma.gcc ... OK
+
+::::::::::::::
+axpy.1k.single.esc.avxfma.gcc.out
+::::::::::::::
+                     Time    TPE
+              Loop    ns     ps/el     Checksum 
+              axpy  474.7    463.6     8053064192.000000 
+
+LEN: 1024, NTIMES: 15728640
+
+::::::::::::::
+axpy.1k.single.esc.avx.gcc.out
+::::::::::::::
+                     Time    TPE
+              Loop    ns     ps/el     Checksum 
+              axpy  474.8    463.6     8053064192.000000 
+
+LEN: 1024, NTIMES: 15728640
+
+::::::::::::::
+axpy.1k.single.vec.avxfma.gcc.out
+::::::::::::::
+                     Time    TPE
+              Loop    ns     ps/el     Checksum 
+              axpy   42.7     41.7     8053064192.000000 
+
+LEN: 1024, NTIMES: 15728640
+
+::::::::::::::
+axpy.1k.single.vec.avx.gcc.out
+::::::::::::::
+                     Time    TPE
+              Loop    ns     ps/el     Checksum 
+              axpy   63.9     62.4     8053064192.000000 
+
+LEN: 1024, NTIMES: 15728640
+
