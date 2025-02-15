@@ -173,7 +173,7 @@ axpy_intr_SSE()
   return 0;
 }
 
-#if 0
+#if 1
 __attribute__ ((noinline))
 int axpy_intr_AVX()
 {
@@ -183,9 +183,31 @@ int axpy_intr_AVX()
   start_t = get_wall_time();
 
 #if PRECISION==0
-
+  __m256 vX, vY, valpha, vaX;
+  for (unsigned int nl = 0; nl < NTIMES; nl++) {
+      valpha = _mm256_set1_ps(alpha);
+      for (unsigned int i = 0; i < LEN; i += AVX_LEN) {
+        vX = _mm256_load_ps(&x[i]);
+        vY = _mm256_load_ps(&y[i]);
+        vaX = _mm256_mul_ps(valpha, vX);
+        vY = _mm256_add_ps(vaX, vY);
+        _mm256_store_ps(&y[i], vY);
+    }
+    dummy(x,y,alpha);
+  }
 #else
-
+  __m256d vX, vY, valpha, vaX;
+  for (unsigned int nl = 0; nl < NTIMES; nl++) {
+      valpha = _mm256_set1_pd(alpha);
+      for (unsigned int i = 0; i < LEN; i += AVX_LEN) {
+        vX = _mm256_load_pd(&x[i]);
+        vY = _mm256_load_pd(&y[i]);
+        vaX = _mm256_mul_pd(valpha, vX);
+        vY = _mm256_add_pd(vaX, vY);
+        _mm256_store_pd(&y[i], vY);
+    }
+    dummy(x,y,alpha);
+  }
 #endif
 
   end_t = get_wall_time();
@@ -200,8 +222,8 @@ int main()
   printf("                     Time    TPE\n");
   printf("              Loop    ns     ps/el     Checksum \n");
   axpy();
-  // axpy_intr_SSE();
-  // axpy_intr_AVX();
+  axpy_intr_SSE();
+  axpy_intr_AVX();
   printf("\nLEN: %u, NTIMES: %lu\n\n", LEN, NTIMES);
   exit(0);
 }
