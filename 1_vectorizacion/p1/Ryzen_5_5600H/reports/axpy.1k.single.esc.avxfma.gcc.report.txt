@@ -1,0 +1,1 @@
+comp.sh: line 192: gcc: command not found

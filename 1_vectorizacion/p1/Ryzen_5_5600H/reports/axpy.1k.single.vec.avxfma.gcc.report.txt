@@ -1,13 +1,1 @@
-../axpy.c:77:5: optimized:   Inlining printf/17 into check/6774 (always_inline).
-../axpy.c:100:5: optimized:   Inlining printf/17 into results/6776 (always_inline).
-../axpy.c:149:13: optimized:   Inlining _mm_store_ps/472 into axpy_intr_SSE/6778 (always_inline).
-../axpy.c:148:18: optimized:   Inlining _mm_add_ps/365 into axpy_intr_SSE/6778 (always_inline).
-../axpy.c:147:19: optimized:   Inlining _mm_mul_ps/367 into axpy_intr_SSE/6778 (always_inline).
-../axpy.c:146:18: optimized:   Inlining _mm_load_ps/465 into axpy_intr_SSE/6778 (always_inline).
-../axpy.c:145:18: optimized:   Inlining _mm_load_ps/465 into axpy_intr_SSE/6778 (always_inline).
-../axpy.c:142:18: optimized:   Inlining _mm_set1_ps/460 into axpy_intr_SSE/6778 (always_inline).
-../axpy.c:205:3: optimized:   Inlining printf/17 into main/6779 (always_inline).
-../axpy.c:201:3: optimized:   Inlining printf/17 into main/6779 (always_inline).
-../axpy.c:200:3: optimized:   Inlining printf/17 into main/6779 (always_inline).
-../axpy.c:74:30: optimized: loop unrolled 1 times
-../axpy.c:117:36: optimized: loop vectorized using 32 byte vectors
+comp.sh: line 183: gcc: command not found
