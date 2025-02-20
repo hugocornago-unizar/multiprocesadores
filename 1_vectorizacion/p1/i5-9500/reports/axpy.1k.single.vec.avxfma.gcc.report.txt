@@ -1,0 +1,8 @@
+../axpy.c:149:13: optimized:   Inlining _mm_store_ps/455 into axpy_intr_SSE/6625 (always_inline).
+../axpy.c:148:18: optimized:   Inlining _mm_add_ps/348 into axpy_intr_SSE/6625 (always_inline).
+../axpy.c:147:19: optimized:   Inlining _mm_mul_ps/350 into axpy_intr_SSE/6625 (always_inline).
+../axpy.c:146:18: optimized:   Inlining _mm_load_ps/448 into axpy_intr_SSE/6625 (always_inline).
+../axpy.c:145:18: optimized:   Inlining _mm_load_ps/448 into axpy_intr_SSE/6625 (always_inline).
+../axpy.c:142:18: optimized:   Inlining _mm_set1_ps/443 into axpy_intr_SSE/6625 (always_inline).
+../axpy.c:74:30: optimized: loop unrolled 1 times
+../axpy.c:117:36: optimized: loop vectorized using 32 byte vectors
