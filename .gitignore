@@ -37,3 +37,6 @@
 *.missed
 *.optimized
 *.details
+
+# Cache
+.ccls-cache/
